@@ -10,6 +10,15 @@ import Login from "./pages/admin/Login";
 import Dashboard from "./pages/admin/Dashboard";
 import Settings from "./pages/admin/Settings";
 
+function PublicPlaceholder({ title, message }) {
+  return (
+    <div>
+      <h1>{title}</h1>
+      <p>{message}</p>
+    </div>
+  );
+}
+
 export default function App() {
   return (
     <AuthProvider>
@@ -17,7 +26,33 @@ export default function App() {
         {/* Public site */}
         <Route path="/" element={<PublicLayout />}>
           <Route index element={<Home />} />
-          {/* Catalogue, Category, Item Details, About, Contact routes arrive in Week 2/3 */}
+          <Route
+            path="catalogue"
+            element={
+              <PublicPlaceholder
+                title="Catalogue"
+                message="Our catalogue is being prepared. Please check back soon."
+              />
+            }
+          />
+          <Route
+            path="about"
+            element={
+              <PublicPlaceholder
+                title="About"
+                message="Business information will be available here soon."
+              />
+            }
+          />
+          <Route
+            path="contact"
+            element={
+              <PublicPlaceholder
+                title="Contact"
+                message="Contact details and inquiry options will be available here soon."
+              />
+            }
+          />
         </Route>
 
         {/* Admin login (outside the protected admin layout) */}
