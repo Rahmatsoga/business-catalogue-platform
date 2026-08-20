@@ -1,14 +1,14 @@
 {
-  "name": "business-catalogue-server",
+  "name": "catalogue-foundation-server",
   "version": "1.0.0",
-  "description": "Business Catalogue Website - backend API (Month 2, Week 1: foundation)",
-  "main": "server.js",
+  "description": "Week 1 - Business Catalogue Website backend foundation (auth, business settings, base schema)",
+  "main": "src/server.js",
   "type": "commonjs",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js",
-    "seed:admin": "node src/utils/seedAdmin.js",
-    "check": "node -c server.js"
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "seed:admin": "node src/seed/seedAdmin.js",
+    "check": "node -c src/server.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -16,11 +16,10 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
-    "express-rate-limit": "^7.2.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.4.1"
+    "mongoose": "^8.5.1"
   },
   "devDependencies": {
-    "nodemon": "^3.1.0"
+    "nodemon": "^3.1.4"
   }
 }

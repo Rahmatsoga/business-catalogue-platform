@@ -1,17 +1,34 @@
 const mongoose = require("mongoose");
-const itemImageSchema = require("./ItemImage");
-const itemSpecificationSchema = require("./ItemSpecification");
 
-const PRICE_TYPES = ["fixed", "range", "starting_from", "contact_for_price", "hidden"];
+// Each item can have multiple images; one is flagged as primary (used on cards)
+const itemImageSchema = new mongoose.Schema(
+  {
+    url: { type: String, required: true },
+    altText: { type: String, default: "" },
+    displayOrder: { type: Number, default: 0 },
+    isPrimary: { type: Boolean, default: false },
+  },
+  { _id: true, timestamps: true }
+);
+
+// Flexible key-value specs, e.g. { label: "Size", value: "60x60 cm" }
+const itemSpecificationSchema = new mongoose.Schema(
+  {
+    label: { type: String, required: true, trim: true },
+    value: { type: String, required: true, trim: true },
+    displayOrder: { type: Number, default: 0 },
+  },
+  { _id: true }
+);
 
 const catalogueItemSchema = new mongoose.Schema(
   {
     categoryId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
-      required: [true, "Every item must belong to exactly one active category (BR-002)"],
+      required: [true, "An item must belong to a category"],
     },
-    name: { type: String, required: true, trim: true },
+    name: { type: String, required: [true, "Item name is required"], trim: true },
     slug: {
       type: String,
       required: true,
@@ -24,25 +41,26 @@ const catalogueItemSchema = new mongoose.Schema(
       type: String,
       trim: true,
       unique: true,
-      sparse: true, // BR-003: SKU unique only WHEN provided
+      sparse: true, // allows many docs with no SKU while still enforcing uniqueness when present
     },
-    summary: { type: String, trim: true, default: "" },
-    description: { type: String, trim: true, default: "" },
+    summary: { type: String, default: "", trim: true },
+    description: { type: String, default: "", trim: true },
 
-    // --- Pricing (FR-016) ---
+    // Flexible pricing - see SRS FR-016
     priceType: {
       type: String,
-      enum: PRICE_TYPES,
-      default: "fixed",
+      enum: ["fixed", "range", "starting_from", "contact_for_price", "hidden"],
+      default: "contact_for_price",
     },
     priceMin: { type: Number, min: 0, default: null },
     priceMax: { type: Number, min: 0, default: null },
 
     availability: {
       type: String,
-      enum: ["in_stock", "out_of_stock", "made_to_order", "unspecified"],
-      default: "unspecified",
+      enum: ["in_stock", "out_of_stock", "made_to_order"],
+      default: "in_stock",
     },
+
     tags: [{ type: String, trim: true, lowercase: true }],
 
     images: [itemImageSchema],
@@ -54,18 +72,7 @@ const catalogueItemSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Supports search (FR-009) and admin filters (FR-043)
-catalogueItemSchema.index({ name: "text", summary: "text", description: "text", tags: "text" });
-catalogueItemSchema.index({ categoryId: 1, isActive: 1 });
-catalogueItemSchema.index({ isFeatured: 1, isActive: 1 });
-
-// Business rule: max price can't be lower than min price
-catalogueItemSchema.pre("validate", function (next) {
-  if (this.priceMin != null && this.priceMax != null && this.priceMax < this.priceMin) {
-    return next(new Error("Maximum price cannot be lower than minimum price"));
-  }
-  next();
-});
+// Text index to support name/SKU/description/tags search (Week 2 feature, defined now)
+catalogueItemSchema.index({ name: "text", description: "text", tags: "text" });
 
 module.exports = mongoose.model("CatalogueItem", catalogueItemSchema);
-module.exports.PRICE_TYPES = PRICE_TYPES;

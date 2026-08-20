@@ -1,44 +1,56 @@
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import "./AdminLayout.css";
+import Button from "../components/Button";
 
 export default function AdminLayout() {
   const { admin, logout } = useAuth();
   const navigate = useNavigate();
 
-  async function handleLogout() {
+  const handleLogout = async () => {
     await logout();
-    navigate("/admin/login", { replace: true });
-  }
+    navigate("/admin/login");
+  };
 
   return (
-    <div className="admin-layout">
-      <aside className="admin-sidebar">
-        <div className="admin-sidebar__brand">Admin Panel</div>
-        <nav className="admin-sidebar__nav">
-          <NavLink to="/admin/dashboard" className={navClass}>
-            Dashboard
-          </NavLink>
-          {/* Categories, Items, Inquiries links will be added in Week 2/3 */}
-          <NavLink to="/admin/settings" className={navClass}>
-            Settings
-          </NavLink>
+    <div style={{ display: "flex", minHeight: "100vh" }}>
+      <aside
+        style={{
+          width: 220,
+          backgroundColor: "var(--color-bg-alt)",
+          borderRight: "1px solid var(--color-border)",
+          padding: "20px",
+        }}
+      >
+        <h2 style={{ fontSize: 18, marginBottom: "24px" }}>Admin Panel</h2>
+        <nav style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+          <Link to="/admin/dashboard">Dashboard</Link>
+          <Link to="/admin/categories">Categories</Link>
+          <Link to="/admin/items">Items</Link>
+          <Link to="/admin/inquiries">Inquiries</Link>
+          <Link to="/admin/settings">Settings</Link>
         </nav>
-        <div className="admin-sidebar__footer">
-          <span className="admin-sidebar__admin-name">{admin?.name}</span>
-          <button onClick={handleLogout} className="admin-sidebar__logout">
-            Logout
-          </button>
-        </div>
       </aside>
 
-      <div className="admin-content">
-        <Outlet />
+      <div style={{ flex: 1 }}>
+        <header
+          style={{
+            borderBottom: "1px solid var(--color-border)",
+            padding: "16px 24px",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <span>Logged in as: {admin?.name}</span>
+          <Button variant="secondary" onClick={handleLogout}>
+            Logout
+          </Button>
+        </header>
+
+        <main style={{ padding: "24px" }}>
+          <Outlet />
+        </main>
       </div>
     </div>
   );
-}
-
-function navClass({ isActive }) {
-  return isActive ? "admin-sidebar__link admin-sidebar__link--active" : "admin-sidebar__link";
 }

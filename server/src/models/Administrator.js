@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
 
 const administratorSchema = new mongoose.Schema(
   {
@@ -14,43 +13,20 @@ const administratorSchema = new mongoose.Schema(
       unique: true,
       lowercase: true,
       trim: true,
-      match: [/^\S+@\S+\.\S+$/, "Enter a valid email address"],
+      match: [/^\S+@\S+\.\S+$/, "Please provide a valid email"],
     },
     passwordHash: {
       type: String,
       required: true,
-      select: false, // never returned by default queries (BR: never expose password hash)
+      select: false, // never return this field by default
     },
     status: {
       type: String,
       enum: ["active", "disabled"],
       default: "active",
     },
-    passwordResetToken: {
-      type: String,
-      select: false,
-    },
-    passwordResetExpires: {
-      type: Date,
-      select: false,
-    },
   },
   { timestamps: true }
 );
-
-// Instance method: compare a plain-text password against the stored hash
-administratorSchema.methods.comparePassword = function (plainPassword) {
-  return bcrypt.compare(plainPassword, this.passwordHash);
-};
-
-// Never leak the hash even if someone forgets `.select(false)` somewhere
-administratorSchema.set("toJSON", {
-  transform: (_doc, ret) => {
-    delete ret.passwordHash;
-    delete ret.passwordResetToken;
-    delete ret.passwordResetExpires;
-    return ret;
-  },
-});
 
 module.exports = mongoose.model("Administrator", administratorSchema);

@@ -5,13 +5,19 @@ const inquirySchema = new mongoose.Schema(
     itemId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "CatalogueItem",
-      default: null, // optional: a general inquiry has no related item
+      default: null, // optional - a general inquiry may not reference an item
     },
-    customerName: { type: String, required: true, trim: true },
-    phone: { type: String, trim: true, default: "" },
-    email: { type: String, trim: true, default: "" },
-    subject: { type: String, trim: true, default: "" },
-    message: { type: String, required: true, trim: true },
+    customerName: { type: String, required: [true, "Name is required"], trim: true },
+    phone: { type: String, default: "", trim: true },
+    email: {
+      type: String,
+      default: "",
+      trim: true,
+      lowercase: true,
+      match: [/^$|^\S+@\S+\.\S+$/, "Please provide a valid email"],
+    },
+    subject: { type: String, default: "", trim: true },
+    message: { type: String, required: [true, "Message is required"], trim: true },
     status: {
       type: String,
       enum: ["new", "contacted", "resolved", "spam"],
@@ -19,13 +25,11 @@ const inquirySchema = new mongoose.Schema(
     },
     source: {
       type: String,
-      enum: ["general_form", "item_form", "whatsapp"],
+      enum: ["general_form", "item_form"],
       default: "general_form",
     },
   },
   { timestamps: true }
 );
-
-inquirySchema.index({ status: 1, createdAt: -1 });
 
 module.exports = mongoose.model("Inquiry", inquirySchema);

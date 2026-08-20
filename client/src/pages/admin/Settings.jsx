@@ -1,141 +1,100 @@
 import { useEffect, useState } from "react";
-import axiosClient from "../../api/axiosClient";
-import "./Settings.css";
-
-const emptyForm = {
-  businessName: "",
-  description: "",
-  address: "",
-  phone: "",
-  email: "",
-  whatsappNumber: "",
-  workingHours: "",
-  mapUrl: "",
-  primaryColor: "#0d9488",
-  secondaryColor: "#0f172a",
-  heroTitle: "",
-  heroText: "",
-};
+import apiClient from "../../api/axiosClient";
+import Input from "../../components/Input";
+import Button from "../../components/Button";
+import Card from "../../components/Card";
+import Spinner from "../../components/Spinner";
 
 export default function Settings() {
-  const [form, setForm] = useState(emptyForm);
-  const [loadState, setLoadState] = useState("loading"); // loading | ready | error
-  const [saveState, setSaveState] = useState("idle"); // idle | saving | success | error
-  const [errorMessage, setErrorMessage] = useState("");
+  const [form, setForm] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    loadSettings();
+    async function fetchSettings() {
+      try {
+        const response = await apiClient.get("/admin/settings");
+        setForm(response.data.data);
+      } catch (err) {
+        setError(err.response?.data?.message || "Failed to load settings.");
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchSettings();
   }, []);
 
-  async function loadSettings() {
-    try {
-      const res = await axiosClient.get("/admin/settings");
-      const data = res.data.data;
-      setForm({
-        businessName: data.businessName || "",
-        description: data.description || "",
-        address: data.address || "",
-        phone: data.phone || "",
-        email: data.email || "",
-        whatsappNumber: data.whatsappNumber || "",
-        workingHours: data.workingHours || "",
-        mapUrl: data.mapUrl || "",
-        primaryColor: data.primaryColor || "#0d9488",
-        secondaryColor: data.secondaryColor || "#0f172a",
-        heroTitle: data.heroTitle || "",
-        heroText: data.heroText || "",
-      });
-      setLoadState("ready");
-    } catch {
-      setLoadState("error");
-    }
-  }
+  const handleChange = (field, value) => {
+    setForm({ ...form, [field]: value });
+  };
 
-  function handleChange(field) {
-    return (e) => setForm((prev) => ({ ...prev, [field]: e.target.value }));
-  }
+  const handleAppearanceChange = (field, value) => {
+    setForm({ ...form, appearance: { ...form.appearance, [field]: value } });
+  };
 
-  async function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSaveState("saving");
-    setErrorMessage("");
-
+    setSaving(true);
+    setMessage("");
+    setError("");
     try {
-      await axiosClient.put("/admin/settings", form);
-      setSaveState("success");
-      setTimeout(() => setSaveState("idle"), 2500);
+      const response = await apiClient.put("/admin/settings", form);
+      setForm(response.data.data);
+      setMessage("Settings saved successfully.");
     } catch (err) {
-      setSaveState("error");
-      setErrorMessage(err.response?.data?.message || "Something went wrong. Please try again later.");
+      setError(err.response?.data?.message || "Failed to save settings.");
+    } finally {
+      setSaving(false);
     }
-  }
+  };
 
-  if (loadState === "loading") return <p>Loading settings…</p>;
-  if (loadState === "error") return <p>Could not load settings. Please refresh the page.</p>;
+  if (loading) return <Spinner label="Loading settings..." />;
+  if (!form) return <p style={{ color: "#dc2626" }}>{error}</p>;
 
   return (
-    <div>
-      <h1>Business Settings</h1>
-      <p style={{ color: "#64748b" }}>
-        This information powers the public website's header, footer, and contact actions.
-      </p>
+    <div style={{ maxWidth: 520 }}>
+      <h1 style={{ marginBottom: "20px" }}>Business Settings</h1>
 
-      <form className="settings-form" onSubmit={handleSubmit}>
-        <fieldset>
-          <legend>Business Profile</legend>
+      <Card>
+        <form onSubmit={handleSubmit}>
+          <Input
+            label="Business Name"
+            name="businessName"
+            value={form.businessName || ""}
+            onChange={(e) => handleChange("businessName", e.target.value)}
+            required
+          />
+          <Input
+            label="Primary Color"
+            name="primaryColor"
+            value={form.appearance?.primaryColor || ""}
+            onChange={(e) => handleAppearanceChange("primaryColor", e.target.value)}
+            placeholder="#0F766E"
+          />
+          <Input
+            label="Secondary Color"
+            name="secondaryColor"
+            value={form.appearance?.secondaryColor || ""}
+            onChange={(e) => handleAppearanceChange("secondaryColor", e.target.value)}
+            placeholder="#0891B2"
+          />
+          <Input
+            label="Hero Title"
+            name="heroTitle"
+            value={form.appearance?.heroTitle || ""}
+            onChange={(e) => handleAppearanceChange("heroTitle", e.target.value)}
+          />
 
-          <label htmlFor="businessName">Business Name</label>
-          <input id="businessName" value={form.businessName} onChange={handleChange("businessName")} required />
+          {message && <p style={{ color: "#16a34a", fontSize: 14 }}>{message}</p>}
+          {error && <p style={{ color: "#dc2626", fontSize: 14 }}>{error}</p>}
 
-          <label htmlFor="description">Description</label>
-          <textarea id="description" value={form.description} onChange={handleChange("description")} rows={3} />
-
-          <label htmlFor="address">Address</label>
-          <input id="address" value={form.address} onChange={handleChange("address")} />
-
-          <label htmlFor="workingHours">Working Hours</label>
-          <input id="workingHours" value={form.workingHours} onChange={handleChange("workingHours")} placeholder="Mon-Sat 9am-6pm" />
-
-          <label htmlFor="mapUrl">Map URL</label>
-          <input id="mapUrl" value={form.mapUrl} onChange={handleChange("mapUrl")} placeholder="https://maps.google.com/..." />
-        </fieldset>
-
-        <fieldset>
-          <legend>Contact (at least one required)</legend>
-
-          <label htmlFor="phone">Phone</label>
-          <input id="phone" value={form.phone} onChange={handleChange("phone")} />
-
-          <label htmlFor="email">Email</label>
-          <input id="email" type="email" value={form.email} onChange={handleChange("email")} />
-
-          <label htmlFor="whatsappNumber">WhatsApp Number</label>
-          <input id="whatsappNumber" value={form.whatsappNumber} onChange={handleChange("whatsappNumber")} placeholder="+92300..." />
-        </fieldset>
-
-        <fieldset>
-          <legend>Appearance</legend>
-
-          <label htmlFor="primaryColor">Primary Color</label>
-          <input id="primaryColor" type="color" value={form.primaryColor} onChange={handleChange("primaryColor")} />
-
-          <label htmlFor="secondaryColor">Secondary Color</label>
-          <input id="secondaryColor" type="color" value={form.secondaryColor} onChange={handleChange("secondaryColor")} />
-
-          <label htmlFor="heroTitle">Hero Title</label>
-          <input id="heroTitle" value={form.heroTitle} onChange={handleChange("heroTitle")} />
-
-          <label htmlFor="heroText">Hero Text</label>
-          <textarea id="heroText" value={form.heroText} onChange={handleChange("heroText")} rows={2} />
-        </fieldset>
-
-        {saveState === "error" && <div className="settings-form__error">{errorMessage}</div>}
-        {saveState === "success" && <div className="settings-form__success">Settings saved successfully.</div>}
-
-        <button type="submit" disabled={saveState === "saving"}>
-          {saveState === "saving" ? "Saving…" : "Save Settings"}
-        </button>
-      </form>
+          <Button type="submit" disabled={saving}>
+            {saving ? "Saving..." : "Save Settings"}
+          </Button>
+        </form>
+      </Card>
     </div>
   );
 }

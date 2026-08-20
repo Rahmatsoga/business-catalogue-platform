@@ -1,65 +1,85 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import "./Login.css";
+import Input from "../../components/Input";
+import Button from "../../components/Button";
+import Card from "../../components/Card";
 
 export default function Login() {
-  const { login } = useAuth();
+  const { admin, checkingSession, login } = useAuth();
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    setError("");
-    setIsSubmitting(true);
-
-    try {
-      await login(email, password);
-      navigate("/admin/dashboard", { replace: true });
-    } catch (err) {
-      const message = err.response?.data?.message || "Something went wrong. Please try again later.";
-      setError(message);
-    } finally {
-      setIsSubmitting(false);
-    }
+  if (!checkingSession && admin) {
+    return <Navigate to="/admin/dashboard" replace />;
   }
 
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setSubmitting(true);
+    try {
+      await login(formData.email, formData.password);
+      navigate("/admin/dashboard");
+    } catch (err) {
+      setError(err.response?.data?.message || "Login failed. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
-    <div className="login-page">
-      <form className="login-card" onSubmit={handleSubmit}>
-        <h1>Admin Login</h1>
-        <p className="login-card__subtitle">Sign in to manage your business catalogue.</p>
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "var(--color-bg-alt)",
+      }}
+    >
+      <Card style={{ width: 380 }}>
+        <h1 style={{ fontSize: 22, marginBottom: "6px" }}>Admin Login</h1>
+        <p style={{ color: "var(--color-text-muted)", fontSize: 14, marginBottom: "20px" }}>
+          Sign in to manage your catalogue.
+        </p>
 
-        {error && <div className="login-card__error">{error}</div>}
+        <form onSubmit={handleSubmit}>
+          <Input
+            label="Email"
+            name="email"
+            type="email"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="admin@example.com"
+            required
+          />
+          <Input
+            label="Password"
+            name="password"
+            type="password"
+            value={formData.password}
+            onChange={handleChange}
+            placeholder="••••••••"
+            required
+          />
 
-        <label htmlFor="email">Email</label>
-        <input
-          id="email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          autoComplete="username"
-        />
+          {error && (
+            <p style={{ color: "#dc2626", fontSize: 14, marginBottom: "12px" }}>{error}</p>
+          )}
 
-        <label htmlFor="password">Password</label>
-        <input
-          id="password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          autoComplete="current-password"
-        />
-
-        <button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Signing in…" : "Sign In"}
-        </button>
-      </form>
+          <Button type="submit" fullWidth disabled={submitting}>
+            {submitting ? "Signing in..." : "Sign In"}
+          </Button>
+        </form>
+      </Card>
     </div>
   );
 }
