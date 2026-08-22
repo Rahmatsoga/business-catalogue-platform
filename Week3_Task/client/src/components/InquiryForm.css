@@ -1,0 +1,88 @@
+.inquiry-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  max-width: 480px;
+}
+
+.inquiry-form label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+.inquiry-form input,
+.inquiry-form textarea {
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  width: 100%;
+}
+
+.inquiry-form input:focus,
+.inquiry-form textarea:focus {
+  outline: 2px solid #0d9488;
+  border-color: #0d9488;
+}
+
+.inquiry-form__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.inquiry-form__hint {
+  font-size: 0.78rem;
+  color: #94a3b8;
+  margin: -0.3rem 0 0.2rem;
+}
+
+.inquiry-form__context {
+  font-size: 0.9rem;
+  color: #475569;
+  margin: 0;
+}
+
+.inquiry-form button {
+  margin-top: 0.4rem;
+  align-self: flex-start;
+  padding: 0.65rem 1.4rem;
+  background: #0d9488;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.inquiry-form button:hover { background: #0b7d73; }
+.inquiry-form button:disabled { background: #94a3b8; cursor: not-allowed; }
+
+.inquiry-form__error {
+  background: #fee2e2;
+  color: #991b1b;
+  padding: 0.6rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+.inquiry-form__success {
+  background: #dcfce7;
+  color: #166534;
+  padding: 0.9rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  max-width: 480px;
+}
+
+/* Honeypot field: hidden from sighted users and screen readers alike,
+   but still present in the DOM for bots that blindly fill every input. */
+.inquiry-form__honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}

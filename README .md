@@ -48,8 +48,8 @@ own self-contained folder with its own setup instructions.
 |---|---|---|
 | [Week 1](./Week1_Task) | Foundation — auth, database schema, business settings, base layouts | ✅ Complete |
 | [Week 2](./Week2_Task) | Core catalogue — category/item management, image uploads, public browsing, search & pagination | ✅ Complete |
-| Week 3 | Customer inquiries, WhatsApp integration, contact/about pages, SEO basics | 🔜 In Progress |
-| Week 4 | Testing, security hardening, deployment | ⏳ Planned |
+| [Week 3](./Week3_Task) | Customer inquiries, WhatsApp integration, contact/about pages, filters/sorting, SEO basics | ✅ Complete |
+| Week 4 | Testing, security hardening, deployment | 🔜 In Progress |
 
 ## Getting Started
 
@@ -57,7 +57,7 @@ Each milestone folder is self-contained with its own `client/` and `server/`. To
 recent version:
 
 ```bash
-cd Week2_Task/server
+cd Week3_Task/server
 npm install
 cp .env.example .env      # then fill in your own values
 npm run seed:admin        # first time only — creates the initial admin login
@@ -65,22 +65,23 @@ npm run dev
 ```
 
 ```bash
-cd Week2_Task/client
+cd Week3_Task/client
 npm install
 cp .env.example .env
 npm run dev
 ```
 
 Full setup instructions, environment variables, and API documentation are in each milestone's
-own README (e.g. [`Week2_Task/README.md`](./Week2_Task/README.md)).
+own README (e.g. [`Week3_Task/README.md`](./Week3_Task/README.md)).
 
 ## Roadmap
 
 - [x] Authentication & admin foundation
 - [x] Category and product catalogue management
 - [x] Public browsing, search, and pagination
-- [ ] Customer inquiries & WhatsApp integration
-- [ ] SEO metadata & production deployment
+- [x] Customer inquiries & WhatsApp integration
+- [x] Filters, sorting, and SEO basics
+- [ ] Automated testing & production deployment
 - [ ] Multi-language support *(future / post-MVP)*
 - [ ] Analytics dashboard *(future / post-MVP)*
 

@@ -1,0 +1,32 @@
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.category-tile {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.25rem 1rem;
+  background: #fff;
+  text-align: center;
+  transition: box-shadow 0.15s ease;
+}
+
+.category-tile:hover {
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+.category-tile__name {
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+
+.category-tile__count {
+  font-size: 0.8rem;
+  color: #94a3b8;
+}

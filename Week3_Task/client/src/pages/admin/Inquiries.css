@@ -1,0 +1,60 @@
+.inquiry-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.inquiry-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.inquiry-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.inquiry-card__header:hover {
+  background: #f8fafc;
+}
+
+.inquiry-card__item {
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
+.inquiry-card__date {
+  color: #94a3b8;
+  font-size: 0.8rem;
+}
+
+.inquiry-card__body {
+  padding: 0 1rem 1rem;
+  border-top: 1px solid #eef2f6;
+  font-size: 0.88rem;
+  color: #334155;
+}
+
+.inquiry-card__body p {
+  margin: 0.5rem 0;
+}
+
+.inquiry-card__actions {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 0.75rem;
+  align-items: center;
+}
+
+.inquiry-card__actions select {
+  padding: 0.4rem 0.6rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
