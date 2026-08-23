@@ -39,8 +39,13 @@ async function getPublicItems(req, res, next) {
     // FR-010: price range filter — only meaningful for items with a numeric priceMin
     // (items priced "Contact for Price" or "Hidden" are excluded once a range is set,
     // since they have no number to compare against).
-    const priceMin = req.query.priceMin !== undefined ? Number(req.query.priceMin) : null;
-    const priceMax = req.query.priceMax !== undefined ? Number(req.query.priceMax) : null;
+    // IMPORTANT: query params can arrive as an empty string ("") when a filter field
+    // exists in the URL but was never filled in — Number("") is 0, NOT "not a number",
+    // so we must explicitly treat "" the same as "not provided" here.
+    const priceMinRaw = req.query.priceMin;
+    const priceMaxRaw = req.query.priceMax;
+    const priceMin = priceMinRaw !== undefined && priceMinRaw !== "" ? Number(priceMinRaw) : null;
+    const priceMax = priceMaxRaw !== undefined && priceMaxRaw !== "" ? Number(priceMaxRaw) : null;
     if (priceMin !== null && !Number.isNaN(priceMin)) {
       filter.priceMin = { ...(filter.priceMin || {}), $gte: priceMin };
     }

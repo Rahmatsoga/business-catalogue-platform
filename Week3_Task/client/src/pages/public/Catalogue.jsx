@@ -32,9 +32,16 @@ export default function Catalogue() {
   async function loadItems() {
     setLoadState("loading");
     try {
-      const res = await axiosClient.get("/public/items", {
-        params: { search, sort, availability, featured, priceMin, priceMax, page },
-      });
+      // Only send params that actually have a value — an empty string for
+      // priceMin/priceMax is NOT the same as "no filter", and sending it
+      // anyway can cause the backend to misinterpret it (e.g. Number("") is
+      // 0, not "unset"). Stripping blanks here keeps the request honest.
+      const rawParams = { search, sort, availability, featured, priceMin, priceMax, page };
+      const cleanParams = Object.fromEntries(
+        Object.entries(rawParams).filter(([, value]) => value !== "" && value !== null && value !== undefined)
+      );
+
+      const res = await axiosClient.get("/public/items", { params: cleanParams });
       setItems(res.data.data);
       setPagination(res.data.pagination);
       setLoadState("ready");
