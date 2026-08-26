@@ -77,7 +77,7 @@ own self-contained folder with its own setup instructions.
 | [01 — Foundation & Auth](./01-foundation-and-auth) | Authentication, database schema, business settings, base layouts | ✅ Complete |
 | [02 — Catalog Management](./02-catalog-management) | Category/item management, image uploads, public browsing, search & pagination | ✅ Complete |
 | [03 — Customer Engagement](./03-customer-engagement) | Customer inquiries, WhatsApp integration, contact/about pages, filters/sorting, SEO basics | ✅ Complete |
-| 04 — Quality & Deployment | Testing, security hardening, production deployment | 🔜 In Progress |
+| 04 — Quality & Deployment | Testing, security hardening, production deployment | ✅ Complete |
 
 ## Getting Started
 
