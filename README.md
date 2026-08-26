@@ -47,7 +47,7 @@ email, or a contact form.
 
 | Add Category | Add Item | Inquiries |
 |---|---|---|
-| ![Add Category](./docs/screenshots/admin-add-categories.jpg) | ![Add Item](./docs/screenshots/admin-add-item.jpg) | ![Inquiries](./docs/screenshots/admin-inquiries.jpg) |
+| ![Add Category](./docs/screenshots/admin-add-categories.jpg) | ![Add Item](./docs/screenshots/admin-add-item.jpg) | ![Inquiries](./docs/screenshots/admin-Inquiries.jpg) |
 
 ## Automated Tests
 
