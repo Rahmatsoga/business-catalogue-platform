@@ -1,0 +1,106 @@
+.item-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  max-width: 640px;
+  margin-top: 1.25rem;
+}
+
+.item-form fieldset {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem 1.25rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  background: #fff;
+}
+
+.item-form legend {
+  font-weight: 600;
+  color: #0f172a;
+  padding: 0 0.4rem;
+}
+
+.item-form label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+.item-form input,
+.item-form select,
+.item-form textarea {
+  padding: 0.55rem 0.7rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-family: inherit;
+}
+
+.item-form input:focus,
+.item-form select:focus,
+.item-form textarea:focus {
+  outline: 2px solid #0d9488;
+  border-color: #0d9488;
+}
+
+.spec-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.image-section {
+  max-width: 640px;
+  margin-top: 1.5rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem 1.25rem 1.25rem;
+  background: #fff;
+}
+
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 0.85rem;
+  margin-top: 1rem;
+}
+
+.image-tile {
+  position: relative;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #f8fafc;
+}
+
+.image-tile img {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  display: block;
+}
+
+.image-tile__badge {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+}
+
+.image-tile__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.4rem;
+}
+
+.image-tile__actions button {
+  font-size: 0.72rem;
+  padding: 0.25rem 0.4rem;
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+}
