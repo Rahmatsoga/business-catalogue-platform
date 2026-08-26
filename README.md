@@ -49,6 +49,14 @@ email, or a contact form.
 |---|---|---|
 | ![Add Category](./docs/screenshots/admin-add-categories.jpg) | ![Add Item](./docs/screenshots/admin-add-item.jpg) | ![Inquiries](./docs/screenshots/admin-inquiries.jpg) |
 
+## Automated Tests
+
+26 automated tests (16 backend, 10 frontend), all passing. See [`04-quality-and-deployment/TEST_REPORT.md`](./04-quality-and-deployment/TEST_REPORT.md) for full details.
+
+| Backend (Jest) | Frontend (Vitest) |
+|---|---|
+| ![Backend tests passing](./docs/screenshots/tests-passing-backend.png) | ![Frontend tests passing](./docs/screenshots/tests-passing-frontend.png) |
+
 ## Tech Stack
 
 | Layer | Technology |
