@@ -110,7 +110,7 @@ own README (e.g. [`03-customer-engagement/README.md`](./03-customer-engagement/R
 - [x] Customer inquiries & WhatsApp integration
 - [x] Filters, sorting, and SEO basics
 - [x] Automated testing & production deployment
-- [x] Multi-language support *(future / post-MVP)*
+- [ ] Multi-language support *(future / post-MVP)*
 - [ ] Analytics dashboard *(future / post-MVP)*
 
 ## License
