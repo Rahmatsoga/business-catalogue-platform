@@ -8,10 +8,16 @@ function signToken(adminId) {
 }
 
 function cookieOptions() {
+  const isProduction = process.env.NODE_ENV === "production";
   return {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production", // HTTPS only in production
-    sameSite: "lax",
+    secure: isProduction, // must be true in production for sameSite: "none" to be allowed at all
+    // "lax" works fine for local dev (frontend and backend both on localhost).
+    // In production, the frontend (Vercel) and backend (Render) live on two
+    // different domains, and browsers block cookies on cross-domain requests
+    // unless sameSite is explicitly "none" — without this, login would
+    // appear to succeed but the cookie would never actually be sent back.
+    sameSite: isProduction ? "none" : "lax",
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   };
 }
