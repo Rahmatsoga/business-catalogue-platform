@@ -47,7 +47,15 @@ email, or a contact form.
 
 | Add Category | Add Item | Inquiries |
 |---|---|---|
-| ![Add Category](./docs/screenshots/admin-add-categories.jpg) | ![Add Item](./docs/screenshots/admin-add-item.jpg) | ![Inquiries](./docs/screenshots/admin-inquiries.jpg) |
+| ![Add Category](./docs/screenshots/admin-add-categories.jpg) | ![Add Item](./docs/screenshots/admin-add-item.jpg) | ![Inquiries](./docs/screenshots/admin-Inquiries.jpg) |
+
+## Automated Tests
+
+26 automated tests (16 backend, 10 frontend), all passing. See [`04-quality-and-deployment/TEST_REPORT.md`](./04-quality-and-deployment/TEST_REPORT.md) for full details.
+
+| Backend (Jest) | Frontend (Vitest) |
+|---|---|
+| ![Backend tests passing](./docs/screenshots/tests-passing-backend.png) | ![Frontend tests passing](./docs/screenshots/tests-passing-frontend.png) |
 
 ## Tech Stack
 
@@ -69,7 +77,7 @@ own self-contained folder with its own setup instructions.
 | [01 — Foundation & Auth](./01-foundation-and-auth) | Authentication, database schema, business settings, base layouts | ✅ Complete |
 | [02 — Catalog Management](./02-catalog-management) | Category/item management, image uploads, public browsing, search & pagination | ✅ Complete |
 | [03 — Customer Engagement](./03-customer-engagement) | Customer inquiries, WhatsApp integration, contact/about pages, filters/sorting, SEO basics | ✅ Complete |
-| 04 — Quality & Deployment | Testing, security hardening, production deployment | 🔜 In Progress |
+| 04 — Quality & Deployment | Testing, security hardening, production deployment | ✅ Complete |
 
 ## Getting Started
 
@@ -101,7 +109,7 @@ own README (e.g. [`03-customer-engagement/README.md`](./03-customer-engagement/R
 - [x] Public browsing, search, and pagination
 - [x] Customer inquiries & WhatsApp integration
 - [x] Filters, sorting, and SEO basics
-- [ ] Automated testing & production deployment
+- [x] Automated testing & production deployment
 - [ ] Multi-language support *(future / post-MVP)*
 - [ ] Analytics dashboard *(future / post-MVP)*
 
